@@ -1,0 +1,289 @@
+---
+title: "Livre des erreurs"
+format: html
+editor: source
+---
+
+# Introduction
+
+
+### Exemple d'erreur : log("a")
+
+Code qui génère l'erreur :
+
+```{r, error = TRUE, echo = TRUE, include = TRUE, eval = TRUE}
+log("a")
+```
+
+Correction de l'erreur :
+
+L'argument est character alors qu'il doit être numérique
+```{r}
+log(1)
+```
+
+
+### Générer une erreur avec Rmarkdown
+
+<!-- Code qui génère l'erreur : -->
+
+<!-- ````markdown -->
+<!-- ```{r, include = TRUE} -->
+<!-- 1 + "a" -->
+<!-- ``` -->
+<!-- ```` -->
+
+Solution :
+
+Il faut rajouter l'argument `error = TRUE` au chunk.
+
+````markdown
+```{r, error = TRUE}
+1 + "a"
+```
+````
+
+
+### Mauvaise version de java
+
+Lorsqu'on essaye d'installer certains packages, on peut tomber sur cette erreur :
+
+"error: Your java version is 1.8.0_341.  Need 17 or higher."
+
+Le pb vient de la version java
+
+Correction de l'erreur :
+
+Pour changer de répertoire java, il faut set une variable d'environnement (pointant vers le lien du dossier java) avec la commande :
+```{r, echo = TRUE, eval = FALSE}
+Sys.setenv("JAVA_HOME" = "C:/Users/UTZK0M/Software/Java17/jdk17")
+```
+
+Aussi un pb est que j'avais écrit :
+```{r, echo = TRUE, eval = FALSE}
+Sys.setenv("JAVA_HOME" = "C:/Users/UTZK0M/Software/Java17/jdk17")
+```
+dans le .renviron alors qu'il faut écrire
+```{r, echo = TRUE, eval = FALSE}
+"JAVA_HOME" = "C:/Users/UTZK0M/Software/Java17/jdk17"
+```
+
+
+### Installation de package
+
+Lorsqu'on essaye d'installer certains packages depuis un repo GITHUB, on peut tomber sur cette erreur :
+
+```{r, error = TRUE, echo = FALSE, include = TRUE, eval = TRUE}
+stop("Skipping install of 'rjd3sa' from a github remote, the SHA1 (0357b12c) has not changed since last install.\n
+  Use `force = TRUE` to force installation")
+```
+
+ce n'est pas un problème. R nous indique simplement qu'on a la dernière version à jour du dernier commit (SHA) sur notre ordinateur. Si on veut néanmoins forcer et refaire l'installation, on peut utiliser `force = TRUE`.
+
+Correction de l'erreur :
+
+```{r, echo = TRUE, eval = FALSE}
+devtools::install_github("palatej/rjd3sa", INSTALL_opts = "--no-multiarch --no-lock", force = TRUE)
+```
+
+
+### Ouverture d'un projet avec des rmarkdown
+
+Lorsqu'on ouvre un projet avec des rmd, qu'on ouvre 2 rmd et qu'on clique sur l'un d'entre eux (dans un coin du code), il arrive qu'on obtienne l'erreur suivante :
+
+```{r, error = TRUE, echo = TRUE, include = TRUE, eval = TRUE}
+stop("Error in .rs.parsePackageDependencies(contents, extension) :\n
+object 'partition_yaml_front_matter' not found")
+```
+
+Le pb vient du chargement des packages rlang et rmarkdown.
+
+Correction de l'erreur :
+- Il faut créer un fichier .Rprofile (s'il n'existe pas)
+- charger `rlang` avec `library("rlang")`
+
+```{r, echo = TRUE, eval = FALSE}
+library("rlang")
+```
+
+
+
+### Render d'un fichier Rmd en latex et erreur :
+
+```
+! Sorry, but C:\Users\UTZK0M\AppData\Local\Programs\MiKTeX\miktex\bin\x64\xelatex.exe did not succeed.
+
+! The log file hopefully contains the information to get MiKTeX going again:
+
+!   C:\Users\UTZK0M\AppData\Local\MiKTeX\miktex\log\xelatex.log
+
+Error: LaTeX failed to compile C:/Users/UTZK0M/Documents/Projets R/Projets MTS/Documentation/JD-Tutorials/Fiches/Fiche_1_Installation_des_outils_FR.tex. See https://yihui.org/tinytex/r/#debugging for debugging tips. See Fiche_1_Installation_des_outils_FR.log for more info.
+```
+
+ou
+
+```
+2023-09-27 11:06:07,407+0200 INFO  xelatex - this process (13964) started by rsession-utf8 in directory C:\Users\UTZK0M\Documents\Projets R\Projets MTS\Documentation\JD-Tutorials\doc with command line: C:\Users\UTZK0M\AppData\Local\Programs\MiKTeX\miktex\bin\x64\xelatex.exe -halt-on-error -interaction=batchmode "C:/Users/UTZK0M/Documents/Projets R/Projets MTS/Documentation/JD-Tutorials/Fiches/Fiche_1_Installation_des_outils_FR.tex"
+2023-09-27 11:06:07,420+0200 INFO  xelatex - running on Windows 10.0.22621
+2023-09-27 11:06:07,431+0200 INFO  xelatex - this is MiKTeX-XETEX 4.10.0 (0.999995) (MiKTeX 23.9.24)
+2023-09-27 11:06:07,445+0200 INFO  xelatex - allowing known shell commands
+2023-09-27 11:06:09,037+0200 FATAL xelatex.core - GUI framework cannot be initialized.
+2023-09-27 11:06:09,037+0200 FATAL xelatex.core - Data: 
+2023-09-27 11:06:09,037+0200 FATAL xelatex.core - Source: Libraries\MiKTeX\UI\Qt\mikuiqt.cpp:126
+2023-09-27 11:06:09,038+0200 FATAL xelatex - GUI framework cannot be initialized.
+2023-09-27 11:06:09,038+0200 FATAL xelatex - Info: 
+2023-09-27 11:06:09,038+0200 FATAL xelatex - Source: Libraries\MiKTeX\UI\Qt\mikuiqt.cpp
+2023-09-27 11:06:09,038+0200 FATAL xelatex - Line: 126
+2023-09-27 11:06:09,044+0200 INFO  xelatex - this process (13964) finishes with exit code 1
+2023-09-27 11:06:09,047+0200 WARN  xelatex.core - still open: "C:/Users/UTZK0M/Documents/Projets R/Projets MTS/Documentation/JD-Tutorials/Fiches/Fiche_1_Installation_des_outils_FR.tex"
+2023-09-27 11:06:09,047+0200 WARN  xelatex.core - still open: Fiche_1_Installation_des_outils_FR.log
+
+```
+
+Le pb vient du manque de mise à jour de certains packages latex. Il faut alors repasser par TexWorks pour résoudre le pb :
+
+- Ouvrir le .tex généré avec TexWorks ou TexMaker
+- faire la compilation
+- Accepter l'installation de tous les paquets manquants (via boite de dialogue)
+
+Les packages sont maintenant bien installés et on peut retourner sur RStudio pour render notre document normalement.
+
+
+
+### Un step d'un job conditionnel
+
+Lorsqu'un step d'un job d'une gha yaml doit s'executer conditionnellement à un OS par exemple et qu'il ne le fait pas, c'est sûrement dû au fait que la condition est mal précisée ou fausse.
+
+Pour sélectionner un OS, voir cette issue : https://stackoverflow.com/questions/57946173/github-actions-run-step-on-specific-os
+
+
+
+### Erreur lors d'un push
+
+```
+remote: Resolving deltas: 100% (30/30), completed with 21 local objects.
+remote: error: GH007: Your push would publish a private email address.
+remote: You can make your email public or disable this protection by visiting:
+remote: http://github.com/settings/emails
+To https://github.com/TanguyBarthelemy/JD_Quarto_Blog.git
+ ! [remote rejected] master -> master (push declined due to email privacy restrictions)
+```
+
+Solution :
+
+Il faut mettre soit adrese mail gh en publique ou utiliser l'autre adresse (fournie par GH).
+
+
+
+### Erreur lors d'une installation de package
+
+
+```{r, echo = TRUE, eval = FALSE}
+remotes::install_github("TanguyBarthelemy/rjdemetra3")
+```
+
+```
+Downloading GitHub repo TanguyBarthelemy/rjdemetra3@HEAD
+Error: Failed to install 'rjdemetra3' from GitHub:
+  HTTP error 403.
+  API rate limit exceeded for 185.24.184.195. (But here's the good news: Authenticated requests get a higher rate limit. Check out the documentation for more details.)
+
+  Rate limit remaining: 0/60
+  Rate limit reset at: 2023-10-17 13:29:35 UTC
+
+  To increase your GitHub API rate limit
+  - Use `usethis::create_github_token()` to create a Personal Access Token.
+  - Use `usethis::edit_r_environ()` and add the token as `GITHUB_PAT`.
+```
+
+Solution :
+- https://github.com/r-lib/remotes/issues/210
+
+
+1) Run in R, `r usethis::create_github_token()`{.r}
+2) On pop-up website, generate and copy your own taken
+3) Run in R, `r credentials::set_github_pat("YourPATinStep2")`{.r}
+4) Verify setting in R, `r usethis::git_sitrep()`{.r}
+5) Run in R, `r remotes::install_github('the repo you want to install')`{.r}
+
+
+### erreur los de l'appel d'une fonction
+
+```
+Error in extract_output(datasets_name = 1, data = 1, frequency = 1, freq_data = 1,  : 
+  unused argument (alist())
+```
+
+Solution : 
+Le problème est qu'il y a une virgule qui traine sans argument derrière...
+
+
+
+### Erreur ouverture Miktex
+
+
+Lorsque j'essaye d'ouvrir miktex, j'obtiens le message "application failed to start because no Qt platform plugin could be initialized,.."
+C'est lié aux issues : 
+https://github.com/MiKTeX/miktex/issues/1489
+et https://github.com/MiKTeX/miktex/issues/1486
+
+
+Solution : 
+
+https://github.com/MiKTeX/miktex/issues/1486#issuecomment-2084843465
+
+Il faut executer dans le terminal (moi je l'ai exécuté dans le terminal de RStudio) la commande suivante :
+
+miktex packages update
+
+
+Pour info, tu peux executer toutes ces commandes (https://github.com/MiKTeX/miktex/issues/1486#issuecomment-2087727096) pour avoir des infos sur miktex.
+
+
+### Erreur installation en boucle
+
+Je voulais mettre l'installation de mes packages dans le Rprofile pour qu'elle se fasse au lancement de mon service. Mais lorsque je le lançais, il tournait en boucle.
+
+Pourquoi ? Parce qu'après une installation, le système redémarre et relance le RProfile et donc l'installation et donc elle tourne en boucle.
+
+Solution :  
+
+Retirer l'installation du RProfile
+
+
+### `cyclic namespace dependency detected`
+
+Lorsqu'on manipule un peu les library et detach, certains objets restent liés...
+
+Ici c'était le lien entre {dplyr} et {dbplyr} :
+
+```
+Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : cyclic namespace dependency detected when loading ‘dplyr’, already loading ‘dbplyr’, ‘dplyr’
+```
+
+La solution la plus simple dans mon cas a été de remplacer le `library()` par `requireNamespace()` et l'utilisation de `::`.
+
+
+### `fatal: Unable to write index.`
+
+Lors d'un `git pull`
+
+
+### `Error in srcrefs[[1L]] : subscript out of bounds`
+
+Le message d'erreur complet est :
+
+```
+Error in srcrefs[[1L]] : subscript out of bounds
+Calls: <Anonymous> ... source -> withVisible -> eval -> eval -> withAutoprint
+ ℹ Loading rjd3tramoseats
+```
+
+Je l'obtiens après avoir lancé `devtools::run_examples()`. Pourtant, les exemples tournent bien à la main sur ma machine.
+
+Solution :
+
+En fait, on se rend compte que c'est `devtools::run_examples(run_donttest = FALSE)` qui génère l'erreur et que `devtools::run_examples(run_donttest = TRUE)` n'en génère pas.
+
+Ce qu'il se passe c'est que dans les pages de doc qui ne contiennent QUE du `\donttest`, il n'y a pas de code à tester (d'où l'erreur)...
+

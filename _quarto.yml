@@ -1,0 +1,22 @@
+project:
+  type: book
+
+book:
+  title: "Fehlerbuch - Livre des erreurs"
+  author: "Tanguy Barthelemy"
+  chapters:
+    - index.qmd
+    - intro.qmd
+    - summary.qmd
+    - references.qmd
+
+bibliography: references.bib
+
+format:
+  html:
+    theme: cosmo
+  pdf:
+    documentclass: scrreprt
+
+editor: source
+
